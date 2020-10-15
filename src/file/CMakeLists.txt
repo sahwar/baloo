@@ -82,6 +82,11 @@ target_link_libraries(baloo_file
 install(TARGETS baloo_file ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES baloo_file.desktop DESTINATION ${AUTOSTART_INSTALL_DIR})
 
+ecm_install_configured_files(
+   INPUT plasma-baloo.service.in
+   DESTINATION ${KDE_INSTALL_SYSTEMDUSERUNITDIR}
+)
+
 add_subdirectory(extractor)
 
 install(FILES
