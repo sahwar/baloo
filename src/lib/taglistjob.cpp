@@ -10,8 +10,6 @@
 #include "database.h"
 #include "transaction.h"
 
-#include <QDir>
-#include <QFileInfo>
 #include <QStringList>
 
 using namespace Baloo;
@@ -36,13 +34,13 @@ void TagListJob::start()
 {
     Database *db = globalDatabaseInstance();
 
-    // if we have no index, we have no tags
-    if (!QFileInfo(QDir(db->path()), QStringLiteral("index")).exists()) {
-        emitResult();
-        return;
-    }
-
     if (!db->open(Database::ReadOnlyDatabase)) {
+        // if we have no index, we have no tags
+        if (!db->isAvailable()) {
+            emitResult();
+            return;
+        }
+
         setError(UserDefinedError);
         setErrorText(QStringLiteral("Failed to open the database"));
         emitResult();
